@@ -1,0 +1,54 @@
+多字节的字符串转换为宽字节字符串：
+利用Lxx
+如，wchar_t p2=L"bbbb";
+计算宽字节字符串长度，使用wcslen函数
+TEXT()函数具有自适应能力
+
+char * 转换为CString：
+      CString str;
+      char *p = "hello world";
+       str = CString(p);
+
+CString转为char *：
+     CString str2="hello girls!!!";
+     CStringA tmp = str2;
+     char *p2 = tmp.GetBuffer();
+     MessageBoxA(this->m_hWnd, p2, "char *", 0);
+
+注意：CString和标准c++的string类是无法直接转换，必须通过char* 转为桥梁
+
+char * 转换为string （c++）：
+   char *pc = "hello pc!!!";
+    string s1 = pc; //string对象可以直接接受char *；
+    cout << s1; //ok
+string   转换为 char *：
+string s2="hello c++ string";
+char * ps=s2.c_str();
+cout<<ps;
+string s2 = "hello c++ string";
+    char ps[100];
+    strcpy(ps, s2.c_str());
+    cout << ps;
+
+实例代码：
+//[
+#include <string.h> //c语言风格的字符串操作函数
+#include <string> //c++风格的字符串操作函数
+#include <iostream>
+using namespace std; //这个不能少
+
+int main(int argc, char const *argv[])
+{
+    //char *转string
+    char *pc = "hello pc!!!";
+    string s1 = pc;
+    cout << s1 << endl;
+    cout << "\n";
+    string s2 = "hello c++ string";
+    char ps[100];
+    strcpy(ps, s2.c_str());
+    cout << ps;
+    return 0;
+}
+
+//]
