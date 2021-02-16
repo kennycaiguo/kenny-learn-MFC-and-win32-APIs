@@ -1,0 +1,10 @@
+注意：CEdit类比较特别：
+它创建窗口需要两步：第一步先创建CEdit类的对象，然后利用该对象的Create方法来创建
+一个比较窗口。完成后还需要把当前CView窗口设置为编辑窗口的父窗口。参考代码
+                m_pEdit = new CEdit();
+	m_pEdit->Create(ES_MULTILINE | WS_CHILD | WS_VISIBLE, CRect(0, 0, 0, 0), this, 1);
+	m_pEdit->SetParent(this);
+	CRect rc;
+	GetClientRect(&rc);
+	m_pEdit->MoveWindow(&rc);
+其中m_pEdit为CView类的成员变量是CEdit*。

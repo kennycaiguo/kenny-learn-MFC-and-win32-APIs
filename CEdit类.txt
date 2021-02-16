@@ -1,0 +1,337 @@
+CEdit控件 详细介绍
+hohogpb2012 年 8 月 8 日  0 Comments
+CEdit类提供了Windows 编辑控件中的功能。编辑控件是一个子窗口矩形，用户可以向其中输入文本。可以通过对话模板或直接从代码中创建一个编辑控件。在两种情形下，首先调用CEdit构造程序构造CEdit对象，再调用Create成员函数创建Windows 编辑控件并将其与CEdit对象连接。构造在CEdit的派生类中可以单步实现。为派生类编写构造程序并从构造程序中调用Create。CEdit从CWnd 继承了重要的功能，要在CEdit对象中设置或获取文本，使用CWnd 成员函数SetWindowText和GetWindowText，可以设置和得到编辑控件的全部内容，即使它是一个多行控件。如果编辑控件是多行的，使用CEdit成员函数GetLine，GetSel，GetSel和ReplaceSel来获取和写入控件的部分文本。
+
+如果要处理编辑控件发往其父类（通常是一个CDialog派生类）的通知消息，则向父类中为每一消息添加一个消息映射入口和消息处理成员函数。各消息映射入口可采用如下形式：
+
+ON_Notification(id,memberFxn)
+
+其中id指定了发送通知的编辑控件的子窗口ID，memberFxn为你写好的处理通知的父成员函数的名字。父函数形式如下：
+
+afx_msg void memberFxn();
+
+下面是一组可能的消息映射入口，以及在何种情况下向父类发送的描述：
+
+ON_EN_CHANGE     用户采取的行动可能会改变编辑控件的文本。与EN_UPDATE通知消息不同，该通知是在
+
+Windows 更新显示之后发送的。
+
+ON_EN_ERRSPACE   编辑控件不能为特定请求分配足够的空间。
+
+ON_EN_HSCROLL    用户单击了编辑控件中的水平滚动条，父窗口在屏幕更新之前被通知。
+
+ON_EN_KILLFOCUS  编辑控件失去输入焦点。
+
+ON_EN_MAXTEXT    当前输入超过了为编辑控件指定的数目，并作截尾处理。当编辑控件不具有
+
+ON_EN_HSCROLL风格且要输入的字符会超过编辑控件的宽度时，发送消息。当编辑控件
+
+不具有ON_EN_VSCROLL风格且要输入的字符会超过编辑控件的高度时，也会发送消息。
+
+ON_EN_SETFOCUS   编辑控件获得焦点。
+
+ON_EN_UPDATE     编辑控件将要显示变动的文本。在控件对文本格式化之后但在显示文本之前发送消息，
+
+以便在必要时改变窗口尺寸。
+
+ON_EN_VSCROLL    用户单击了编辑控件中的垂直滚动条，父窗口在屏幕更新之前被通知。
+
+如果在对话框内创建CEdit对象，CEdit对象在用户关闭对话框时自动被删除。如果使用对话框编辑器从对话资源中创建CEdit对象，CEdit对象在用户关闭对话框时自动被删除。如果在窗口内创建CEdit对象，也需要删除它。如果在栈上创建CEdit对象，它被自动删除。如果使用new函数在堆上创建CEdit对象，在用户中止编辑控件时，必须对其调用delete来删除它。如果在CEdit对象中分配存储空间，覆盖CEdit析构程序来处理分配情况。关于CEdit的更多信息，请参阅联机文档“Visual C++程序员指南”中的“控件主题”。
+
+#include<afxwin.h>
+
+1       CEdit类的成员
+1.1  构造函数
+CEdit    构造一个CEdit控件对象
+
+Create   创建一个Windows编辑控件，并将其与CEdit对象连接CEdit
+
+属性
+
+CanUndo        决定一个编辑控件操作是否能够被撤销
+
+GetLineCount   获得多行编辑控件中的行数GetModify决定编辑控件的内容是否被修改SetModify为编辑控件设置或清除修改标记
+
+GetRect        为编辑控件获取格式化的矩形
+
+GetHandle      获得为当前多行编辑控件分配的内存的句柄
+
+SetHandle      设置为多行编辑控件使用的本地内存的句柄
+
+SetMargins     为CEdit设置左边和右边的空白边界
+
+GetMargins     获得为CEdit设置左边和右边的空白边界
+
+SetLimitText   设置CEdit能够容纳的文本的最大量
+
+GetLimitText   获得CEdit能够容纳的文本的最大量
+
+PosFromChar    获得指定字符索引的左上角的坐标
+
+CharFromPos    获得最靠近指定位置的字符的行和字符索引
+
+GetLine        从编辑控件中获得一行文本
+
+GetPasswordChar  获得当用户输入文本时在编辑控件中显示的口令
+
+GetFirstVisibleLeLine    决定在编辑控件中最顶部的可视的行
+
+1.2  CEdit 操作
+EmptyUndoBuffer      重新设置（清除）编辑控件的撤销标记
+
+FmtLines             设置在多行编辑控件中的软回车打开或关闭
+
+LimitText            用户在输入文本时的文本长度限制
+
+LineFromChar         获得包含指定字符索引的行的数目
+
+LineIndex            获得在多行编辑控件中的某行的字符索引
+
+LineLength           获得编辑控件中的行的长度
+
+LineScroll           在多行编辑控件中滚动文本
+
+ReplaceSel           用指定文本覆盖编辑控件中当前被选中的文本
+
+SetPasswordChar      设置或清除当用户输入文本时在编辑控件中显示的口令
+
+SetRect              设置多行编辑控件的带格式的矩形，并更新该控件
+
+SetRectNP            设置多行编辑控件的带格式的矩形，而不必重新绘制
+
+SetSel               在编辑控件中选定文本
+
+SetTabStops          设置多行编辑控件的制表键停顿位
+
+SetReadOnly          为编辑控件设置只读状态
+
+1.3  CEdit剪贴板操作
+Undo    撤销上一次的编辑控件操作
+
+Clear    删除（清除）编辑控件中当前选中的文本
+
+Copy    将编辑控件中的当前选中文本以CF_TEXT格式拷贝到剪贴板中
+
+Cut       删除编辑控件中当前选中的文本，并将删除的文本以CF_TEXT格式拷贝到剪贴板中
+
+Paste   在当前光标位置插入剪贴板内的文本。只有在剪贴板数据为CF_TEXT格式时才进行插入
+
+2       成员函数
+2.1  CEdit::CanUndo
+BOOL CanUndo() const;
+
+返回值如果上一次编辑操作可以用Undo成员函数撤销，则返回非零值，否则为0。说明调用该函数来决定上一次编辑操作是否可以撤销。
+
+要了解更多信息，请参阅Win 32文档中的EM_CANUNDO 。请参阅  CEdit::Undo,CEdit::EmptyUndoBuffer
+
+2.2  CEdit::CEdit
+CEdit();说明构造一个CEdit对象。使用Create来创建Windows 编辑控件。
+
+请参阅  CEdit::Create
+
+2.3  CEdit::CharFromPos
+int CharFromPos(CPoint pt) const;
+
+返回值返回WORD低位的字符索引，以及WORD高位的行索引。参数pt在客户区域中的CEdit对象的点的坐标。说明调用该函数来获取基于0索引的行和最接近CEdit控件中指定点的字符索引。
+
+注意  该成员函数在Windows 95和Windows NT 4.0中有效。
+
+要了解更多的信息，请参阅Win 32文档中的EM_CHARFROMMOPS。请参阅  CEdit::PosFromChar
+
+2.4  CEdit::Clear
+void Clear();
+
+说明调用该函数来删除（清除）编辑控件中当前选中的文本。
+
+由Clear进行的操作可以通过调用Undo成员函数撤销。要删除当前选定文本并将其拷贝到剪贴板上，调用Cut成员函数。要了解更多的信息，请参阅Win 32文档中的WM_CLEAR。请参阅  CEdit::Undo,CEdit::Copy,CEdit::Cut,CEdit::Paste
+
+2.5  CEdit::Copy
+oid Copy();
+
+说明调用该函数将编辑控件中的当前选中文本以CF_TEXT格式拷贝到剪贴板中。要了解更多的信息，请参阅Win 32文档中的WM_COPY。请参阅  CEdit::Clear,CEdit::Cut,CEdit::Paste
+
+2.6  CEdit::Create
+BOOL Create(DWORD dwStyle,const RECT&rect,CWnd*pParentWnd,UNIT nID);
+
+返回值初始化成功，则返回非零值，否则为0。参数dwStyle指定编辑控件的风格。可以组合使用控件的编辑风格。
+
+rect          指定控件的尺寸和位置。可以是RECT结构或CRect对象 。
+
+pParentWnd    指定编辑控件的父窗口（通常使用CDialog ）。其值不能为NULL。
+
+nID           指定编辑控件的ID。
+
+说明
+
+构造CEdit对象分两步。首先调用CEdit构造程序，再调用Create，这样就创建了一个Windows 编辑控件，并将其与CEdit对象连接。当执行Create时，Windows 发送WM_NCCREATE ，WM_NCCALCSIZE ，WM_CREATE 和WM_GETMINMAXINFO 消息到编辑控件。
+
+缺省地，这些消息由CWnd 基类中的OnNcCalcSize，OnCreate，OnNcCreate和OnGetMinMaxInfo成员函数处理。要扩展缺省的消息处理，先从CEdit派生一个类，为新类添加消息映射并覆盖上述消息处理成员函数。例如，覆盖OnCreate为新类执行所需要的初始化操作。
+
+可以为编辑控件应用如下的风格：
+
+WS_CHILD     总是采用
+
+WS_VISIBLE   经常采用
+
+WS_DISABLED  很少采用
+
+WS_GROUP     组合控件
+
+WS_TABSTOP   按制表键次序包含编辑控件
+
+请参阅  CEdit::CEdit
+
+2.7  CEdit::Cut
+void Cut();
+
+说明调用该函数来删除（剪切）在编辑控件中的当前选定文本，并将其用CF_TEXT格式拷贝到剪贴板中。由Cut执行的删除可以由Undo成员函数来撤销。删除当前选定部分而不将已删除文本置于剪贴板，调用Clear成员函数。要了解更多的信息，请参阅Win 32文档中的WM_CUT。请参阅  CEdit::Undo ,CEdit::Clear,CEdit::Copy,CEdit::Paste
+
+2.8  CEdit::EmptyUndoBuffer
+Void EmptyUndoBuffer();
+
+说明调用此成员函数重新设置（清除）一个编辑控件中的撤消标记，使编辑控件不可撤消最近一次操作。撤消标记在编辑控件的某个操作可以撤消时建立。当调用SetWindows 或SetHandle Cwnd成员函数时，撤消标记自动被清除。要了解更多的信息，请参阅Win32文档中的EM_EMPTYUNDOBUFFER。请参阅  CEdit::CanUndo, CEdit::SetHandle, CEdit::Undo,CWnd::SetWindowText
+
+2.9  CEdit::FmtLines
+BOOL  FmtLines(BOOL bAddEOL);
+
+返回值如果发生格式化，则返回非零值，否则为0。
+
+参数
+
+bAddEOl
+
+指定是否要插入软断行符，值为True时插入软断行符，为False时去掉软断行符。说明调用此成员函数用于设置在一个多行编辑控件中是否包含软断行符。一个软断行符包含在断行行末插入两个回车和一个换行，这是因为一行可容纳的文字有限。而一个硬断行符包含一个回车和一个断行。以硬断行符结束的行不受FmtLines的影响。
+
+仅在CEdit对象是一个多行编辑控件时Windows才响应此命令。FmtLines仅影响GetHandle返回的缓冲区和WM_GETTEXT返回的文本，而对编辑控件中的显示无影响。
+
+要了解更多信息，请参阅Win32文档中的EM_FMTLINES。
+
+请参阅  CEdit::GetHandle, CWnd::GetWindowText
+
+2.10       CEdit::GetFirstVisibleLine
+int GetFirstVisibleLine()const;
+
+返回值可视的最顶端行的行号（行号由0开始），对单行编辑控件来说，返回值为0。说明调用此成员函数决定编辑控件中可视的最顶端行的行号。
+
+要了解更多信息，请参阅Win32文档中的EM_GETFIRSTVISIBLELINE。
+
+请参阅  CEdit::GetLine
+
+2.11       CEdit::GetHandle
+HLOCAL GetHandle() const;
+
+返回值一个用于标识编辑控件内容的局部内存句柄。如果发生错误，例如发送信息到一个单行编辑控件，则返回值为0。说明调用此成员函数来获取一个多行编辑控件中当前分配的内存句柄。此句柄是一个局部内存句柄，可被任何局部Windows存储函数作为一个参数来获得。
+
+GetHandle仅仅被多行编辑控件处理。
+
+在一个多行编辑控件的对话框中调用此成员函数时，对话框必须由DS_LOCAL-EDIT的样式标志集生成。如果不是，虽然也可以得到一个非零的返回值，但此返回值不可被使用。
+
+注意
+
+GetHandle不可在Windows 95下运行。如果在Windows 95下调用，会返回NULL。GetHandle可在Windows NT 3.51版及以上使用。要了解有关的更多信息，请参阅Win32文档中的EM_GETHANDLE。
+
+请参阅  CEdit::SetHandle
+
+2.12       CEdit::GetLimitText
+UINT GetLimitText() const;
+
+返回值对当前CEdit对象的文本大小限制，以字节计算。说明调用此成员函数来获取该CEdit对象的文本大小限制，文本限制是此编辑控件可以接收的文本的最大长度（以字节计算）。
+
+注意
+
+此成员函数仅在Windows 95和Windows NT 4.0以上版本中可用。要了解更多信息，请参阅Win32文档中的EM_GETLIMITTEXT。
+
+请参阅  CEdit::SetLimitText, CEdit::LimitText
+
+2.13       CEdit::GetLine
+int GetLine(int nIndex, LPCTSTR lpszBuffer) const;
+
+int GetLine(int nIndex, LPCTSTR lpszBuffer, int nMaxLength) const;
+
+返回值实际拷贝的字节数。如果由nIndex指定的行号大于此编辑控件的行数，则返回值为0。
+
+参数
+
+nIndex    指定从多行编辑控件中检索的行的行号，行号由0指定。对单行编辑控件，此参数被忽略。
+
+lpszBuffer指向获取此行备份的缓冲区。缓冲区的第一个字必须指定能被拷贝到缓冲区的最大字节数。   nMaxLength指定能被拷贝到缓冲区的最大字节数，GetLine在调用Windows之前将此值放置到lpszBuffer的第一个字中。说明调用此成员函数从编辑控件中获取文本的一行并将其放置到lpszBuffer缓冲区。被拷贝的行不包括空终止符。要了解更多信息，请参阅Win32文档中的EM_GETLINE。
+
+3       文本控件的常用通知消息
+消息名称                  消息说明
+
+EN_CHANGE         编辑控件的内容一旦发生改变，就发送这条消息。
+
+EN_ERRSPACE    任何时候只要由于内存不足以完成一项编辑操作，就发送这条消息。
+
+EN_HSCROLL 只要用户单击了从属于一个编辑控件的水平滚动条的任何地方，就会发送这条消息。注意这条消息是在控件更新显示之前发送出去的。
+
+EN_KILLFOCUS    一旦控件丢失了输入焦点，则发出这条消息。
+
+EN_MAXTEXT        只要用户输人的文字试图超出由EM_LIMITTEXT消息规定购界限，或试图超出由VB Maxlength属性规定的界限，就会发送这条消息。此外，倘若不允许自动进行水平滚动，同时插入点要超出控件的宽度；或者不允许自动自动滚动，同时插入点要超出接件的高度，那么也会触发这条消息。
+
+EN_SETFOCUS     一旦控件接收到了输入焦点，就发出这条消息。
+
+EN_UPDATE / EN_VSCROLL　 只要用户单击了从属于一个编辑控件的垂直滚动条的任何地方，就会发送这条消息。注意这条消息是在控件更新显示之前发送出去的。
+
+4       文本控件的常用消息
+消息名称                         消息说明
+
+EM_CANUNDO             决定前一次编辑操作是否能够撤消
+
+EM_EMPTYUNDOBUFFER      清除控件的撤消缓冲区，使其不可能撤消前一次编辑操作
+
+EM_UNDO                     撤消前一次编辑操作
+
+EM_FMTLINES              决定是否在取回的文本宇串中包含软回车字符
+
+EM_GETLIMITTEXT      获取一个编辑控件中文本的最大长度
+
+EM_GETMARGINS       获取编辑控件的左、右边距(不得用于NT3．51)
+
+EM_GETRECT              获取一个编辑控件的格式化矩形
+
+EM_LIMITTEXT              限制编辑耀件甲购文本长度
+
+EM_SETLIMITTEXT      限制编辑控件中的文本长度(不得用于NT3．51)
+
+EM_SETMARGINS       设置编辑控件的左、右边距(不得用于NT3．51)
+
+EM_SETRECT                     为一个编辑控件设置格式化矩形
+
+EM_SETRECTNP         与EM_SETRECT类似，只是控件此时不会重画
+
+EM_SETTABSTOPS    设置编辑控件中的制表站间距
+
+EM_CHARFROMPOS  判断编辑控件指定位置处的字符(不适用于NT3．51)
+
+EM_GETFIRSTVISIBLEIN　　判断编辑控件中显示的第一行
+
+EM_GETLINE                从编辑控件取回…行的内容
+
+EM_GETLINECOUNT   判断一个编辑控件的总行数
+
+EM_GETMODIFY          判断编辑控件的内容是否已发生变化
+
+EM_GETPASSWORDCHAR    取得编辑控件的密码字符
+
+EM_GETSEL                        判断编辑控件中一段选定内容的起点与终点
+
+EM_LINEFROMCHAR         判断是哪一行显示了某个特殊字符
+
+EM_LINEINDEX                   判断指定行第一个字符的编号
+
+EM_LINELENGTH                判断一行长度
+
+EM_LINESCROLL               滚动编辑控件
+
+EM_POSFROMCHAR         判断指定字符在编辑控件的位置(用于NT3．51)
+
+EM_REPLACESEL             用指定文本替换编辑控件中的当前选定内容
+
+EM_SETMODIFY                 用于设置或清除一个编辑控件的修改标志
+
+EM_SETPASSWORDCHAR    为指定的控件设置密码字符
+
+EM_READONLY                  决定是否将编辑控件设为只读
+
+EM_SETSEL                        设置编辑控件中一段选定内容的起点一终点
