@@ -6,6 +6,8 @@ docs and sample codes for learning MFC
 # <a href="https://www.cnblogs.com/ike_li/archive/2012/12/19/2824612.html">CCheckListBox 有复选框的列表框</a>
 # <a href="https://blog.csdn.net/beer888/article/details/3754820">static_cast” : 无法从“void (__thiscall CMainFrame::* )(NMTOOLBARA *,LRESULT *)”转换为“void (__thiscall CCmdTarget::* )(NMHDR *,LRESULT</a>
 
+# MFC 案例收集
+
 MRC demos  :  https://github.com/kennycaiguo/MFC <br/>
 MFC画图：基于MFC的简易画图程序，支持绘制各种图形及文本、修改已有图形、撤回、保存等： https://github.com/kennycaiguo/MFC-SimpleDraw <br/>
 基于C++、MFC的Windows安全管家系统，功能包括：病毒查杀、垃圾清理、内存优化、进程管理、开机启动项管理、软件卸载 ： https://github.com/kennycaiguo/SecurityManager <br/>
